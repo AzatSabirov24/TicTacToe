@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.asabirov.tictactoe.ui.theme.ClickDetector
 
 @Composable
 fun CellsScreen(modifier: Modifier) {
@@ -28,7 +29,7 @@ fun CellsScreen(modifier: Modifier) {
     val animateLineHorizontal = remember {
         Animatable(initialValue = 0f)
     }
-    val tappedX = remember {
+    val tappedOffset = remember {
         mutableStateOf(Offset.Zero)
     }
     LaunchedEffect(key1 = true) {
@@ -68,6 +69,7 @@ fun CellsScreen(modifier: Modifier) {
     val verticalOutPath2 = Path()
     val horizontalOutPath = Path()
     val horizontalOutPath2 = Path()
+    val clickDetector = ClickDetector()
     PathMeasure().apply {
         setPath(verticalPath, false)
         getSegment(0f, animateLineVertical.value * length, verticalOutPath, true)
@@ -88,7 +90,7 @@ fun CellsScreen(modifier: Modifier) {
         .fillMaxSize()
         .pointerInput(true) {
             detectTapGestures {
-                tappedX.value = it
+                tappedOffset.value = it
             }
         }
     ) {
@@ -97,10 +99,19 @@ fun CellsScreen(modifier: Modifier) {
 //            println("qqq ->CellsScreen->tappedX.value.x = ${tappedX.value.x}")
 //            println("qqq ->CellsScreen->center.x - tappedX.value.x= ${center.x - tappedX.value.x}")
 //            println("qqq ->CellsScreen->center.x= ${center.y}")
-//            println("qqq ->CellsScreen->tappedX.value.x = ${tappedX.value.y}")
+//            println("qqq ->CellsScreen->tappedX.value.y = ${tappedX.value.y}")
 //            println("qqq ->CellsScreen->center.y - tappedX.value.y= ${center.y - tappedX.value.y}")
-            clickDetector(center.x - tappedX.value.x, center.y - tappedX.value.y)
-            println("qqq ->clickDetector= ${clickDetector(center.x - tappedX.value.x, center.y - tappedX.value.y)}")
+            val cellType =
+                clickDetector(center.x - tappedOffset.value.x, center.y - tappedOffset.value.y)
+//            println("qqq ->clickDetector= $cellType")
+
+            detectCellCenter(cellType)?.let {
+                drawCircle(
+                    color = Color.Red,
+                    radius = 10.dp.toPx(),
+                    center = it
+                )
+            }
             drawPath(
                 path = verticalOutPath,
                 color = Color.Black,
@@ -125,18 +136,68 @@ fun CellsScreen(modifier: Modifier) {
     }
 }
 
+fun detectCellCenter(cellType: CellType): Offset? {
+    return when (cellType) {
+        is CellType.FirstCellType -> {
+            Offset(
+                x = -200f,
+                y = -200f
+            )
+        }
 
-fun clickDetector(x: Float, y: Float): CellType {
-    return when {
-        x in 102f..300f && y in 102f..300f -> CellType.FirstCellType
-        x in -98f..98f && y in 102f..300f -> CellType.SecondCellType
-        x in -300f..-102f && y in 102f..300f -> CellType.ThirdCellType
-        x in 102f..300f && y in -98f..98f -> CellType.ForthCellType
-        x in -98f..98f && y in -98f..98f -> CellType.FifthCellType
-        x in -300f..-102f && y in -98f..98f -> CellType.SixthCellType
-        x in 102f..300f && y in  -300f..-102f -> CellType.SeventhCellType
-        x in -98f..98f && y in  -300f..-102f -> CellType.EighthCellType
-        x in -300f..-102f && y in  -300f..-102f -> CellType.NinthCellType
-        else -> CellType.OutOfCellType
+        is CellType.SecondCellType ->
+            Offset(
+                x = 0f,
+                y = -200f
+            )
+
+        is CellType.ThirdCellType ->
+            Offset(
+                x = 200f,
+                y = -200f
+            )
+
+
+        is CellType.ForthCellType ->
+            Offset(
+                x = -200f,
+                y = 0f
+            )
+
+
+        is CellType.FifthCellType ->
+            Offset(
+                x = 0f,
+                y = 0f
+            )
+
+
+        is CellType.SixthCellType ->
+            Offset(
+                x = 200f,
+                y = 0f
+            )
+
+
+        is CellType.SeventhCellType ->
+            Offset(
+                x = -200f,
+                y = 200f
+            )
+
+
+        is CellType.EighthCellType ->
+            Offset(
+                x = 0f,
+                y = 200f
+            )
+
+
+        is CellType.NinthCellType ->
+            Offset(
+                x = 200f,
+                y = 200f
+            )
+        else -> null
     }
 }
