@@ -1,4 +1,4 @@
-package com.asabirov.tictactoe.ui
+package com.asabirov.tictactoe.presentation
 
 sealed class CellType {
     object FirstCellType: CellType()

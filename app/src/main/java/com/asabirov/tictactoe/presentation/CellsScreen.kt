@@ -1,4 +1,4 @@
-package com.asabirov.tictactoe.ui
+package com.asabirov.tictactoe.presentation
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.asabirov.tictactoe.ui.theme.ClickDetector
 
 @Composable
 fun CellsScreen(modifier: Modifier) {
@@ -69,7 +68,7 @@ fun CellsScreen(modifier: Modifier) {
     val verticalOutPath2 = Path()
     val horizontalOutPath = Path()
     val horizontalOutPath2 = Path()
-    val clickDetector = ClickDetector()
+    val clickedCellDetector = ClickedCellDetector()
     PathMeasure().apply {
         setPath(verticalPath, false)
         getSegment(0f, animateLineVertical.value * length, verticalOutPath, true)
@@ -102,7 +101,7 @@ fun CellsScreen(modifier: Modifier) {
 //            println("qqq ->CellsScreen->tappedX.value.y = ${tappedX.value.y}")
 //            println("qqq ->CellsScreen->center.y - tappedX.value.y= ${center.y - tappedX.value.y}")
             val cellType =
-                clickDetector(center.x - tappedOffset.value.x, center.y - tappedOffset.value.y)
+                clickedCellDetector(center.x - tappedOffset.value.x, center.y - tappedOffset.value.y)
 //            println("qqq ->clickDetector= $cellType")
 
             detectCellCenter(cellType)?.let {

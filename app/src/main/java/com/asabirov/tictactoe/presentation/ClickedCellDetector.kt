@@ -1,8 +1,6 @@
-package com.asabirov.tictactoe.ui.theme
+package com.asabirov.tictactoe.presentation
 
-import com.asabirov.tictactoe.ui.CellType
-
-class ClickDetector {
+class ClickedCellDetector {
 
     operator fun invoke(x: Float, y: Float): CellType {
         return when {

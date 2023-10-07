@@ -1,10 +1,9 @@
-package com.asabirov.tictactoe
+package com.asabirov.tictactoe.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.Modifier
-import com.asabirov.tictactoe.ui.CellsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
